@@ -1,4 +1,3 @@
-# functions.py
 import pygame
 import random
 
@@ -128,17 +127,22 @@ def new_pieces(board):
 # draw background for the board
 def draw_board(screen, font, score, high_score):
     pygame.draw.rect(screen, colors['bg'], [0, 50, 400, 400], 0, 10)  
-    score_text = font.render(f'Score: {score}', True, colors['dark text'])
-    high_score_text = font.render(f'High Score: {high_score}', True, colors['dark text'])
-    screen.blit(score_text, (10, 460))
-    screen.blit(high_score_text, (200, 460)) 
+    score_text = pygame.font.Font('freesansbold.ttf', 18).render(f'Score: {score}', True, colors['dark text'])
+    high_score_text = pygame.font.Font('freesansbold.ttf', 18).render(f'High Score: {high_score}', True, colors['dark text'])
+    screen.blit(score_text, (10, 455))
+    screen.blit(high_score_text, (200, 455))
+
+    made_by = pygame.font.Font('freesansbold.ttf', 14).render("Made by JasmnC", True, colors['light text'])
+    screen.blit(made_by, (145, 480))
+    me_image = pygame.image.load('me.png')  
+    screen.blit(me_image, (265, 475))
 
 # draw the top bar
 def draw_header(screen, font):
     pygame.draw.rect(screen, 'grey', [0, 0, 400, 50])
     info_icon_image = pygame.image.load('info_icon.png')  
-    screen.blit(info_icon_image, (400 - 50, 0))
-    welcome_text1 = pygame.font.Font('freesansbold.ttf', 20).render("Welcome to 2048", True, colors['dark text'])
+    screen.blit(info_icon_image, (350, 5))
+    welcome_text1 = pygame.font.Font('freesansbold.ttf', 22).render("Welcome to 2048", True, colors['dark text'])
     welcome_text2 = pygame.font.Font('freesansbold.ttf', 14).render("Can you beat it?", True, colors['dark text'])
     screen.blit(welcome_text1, (110, 10))
     screen.blit(welcome_text2, (140, 30))
@@ -190,8 +194,9 @@ def click_information(mouse_pos):
 
 # Function to display the instructions panel
 def draw_information(screen, font):
-    instructions_panel = pygame.Surface((300, 150))  
-    instructions_panel.fill(colors['pop box'])
+    instructions_panel = pygame.Surface((300, 150),pygame.SRCALPHA)
+    pygame.draw.rect(instructions_panel, colors['pop box'], instructions_panel.get_rect(), border_radius=10)
+
     instruction_text1 = font.render("Instructions: ", True, 'white')
     instructions_panel.blit(instruction_text1, (10, 10))
 
@@ -200,7 +205,6 @@ def draw_information(screen, font):
         "* Scores are add up on merged tiles",
         "* Press any key to exit the game"
         ]
-
     vertical_position = 40
     for line in text:
         line_rendered = pygame.font.Font('freesansbold.ttf', 16).render(line, True, 'white')
@@ -208,3 +212,6 @@ def draw_information(screen, font):
         vertical_position += line_rendered.get_height() + 10
 
     screen.blit(instructions_panel, (50, 100))
+
+def open_link():
+    webbrowser.open('https://JasmnC.com')
