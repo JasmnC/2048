@@ -138,6 +138,10 @@ def draw_header(screen, font):
     pygame.draw.rect(screen, 'grey', [0, 0, 400, 50])
     info_icon_image = pygame.image.load('info_icon.png')  
     screen.blit(info_icon_image, (400 - 50, 0))
+    welcome_text1 = pygame.font.Font('freesansbold.ttf', 20).render("Welcome to 2048", True, colors['dark text'])
+    welcome_text2 = pygame.font.Font('freesansbold.ttf', 14).render("Can you beat it?", True, colors['dark text'])
+    screen.blit(welcome_text1, (110, 10))
+    screen.blit(welcome_text2, (140, 30))
 
 # draw tiles for game
 def draw_pieces(screen, font, board):
@@ -186,8 +190,21 @@ def click_information(mouse_pos):
 
 # Function to display the instructions panel
 def draw_information(screen, font):
-    instructions_panel = pygame.Surface((300, 200))  
+    instructions_panel = pygame.Surface((300, 150))  
     instructions_panel.fill(colors['pop box'])
-    instructions_text = font.render("Instructions:", True, 'red')
-    instructions_panel.blit(instructions_text, (10, 10))
+    instruction_text1 = font.render("Instructions: ", True, 'white')
+    instructions_panel.blit(instruction_text1, (10, 10))
+
+    text= ["* Merge two tiles with the same value",
+        "* Use arrow keys to merge", 
+        "* Scores are add up on merged tiles",
+        "* Press any key to exit the game"
+        ]
+
+    vertical_position = 40
+    for line in text:
+        line_rendered = pygame.font.Font('freesansbold.ttf', 16).render(line, True, 'white')
+        instructions_panel.blit(line_rendered, (10, vertical_position))
+        vertical_position += line_rendered.get_height() + 10
+
     screen.blit(instructions_panel, (50, 100))
