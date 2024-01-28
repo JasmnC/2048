@@ -171,11 +171,9 @@ def draw_pieces(screen, font, board):
 
 # draw invalid input to end the game
 def draw_invalid(screen, font):
-    pygame.draw.rect(screen, colors['pop box'], [50, 50, 300, 100], 0, 10)
+    pygame.draw.rect(screen, colors['pop box'], [100, 100, 200, 50], 0, 10)
     invalid_text1 = font.render('Invalid Input', True, 'white')
-    invalid_text2 = font.render('Game Quit', True, 'white')
-    screen.blit(invalid_text1, (130, 65))
-    screen.blit(invalid_text2, (140, 105))
+    screen.blit(invalid_text1, (130, 110))
 
 # check if the game is not over
 def check_game_over(board_values):
@@ -212,6 +210,3 @@ def draw_information(screen, font):
         vertical_position += line_rendered.get_height() + 10
 
     screen.blit(instructions_panel, (50, 100))
-
-def open_link():
-    webbrowser.open('https://JasmnC.com')
