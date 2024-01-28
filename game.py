@@ -38,23 +38,15 @@ while run:
             board_values, game_over = new_pieces(board_values)
             spawn_new = False
             init_count += 1
+
+        if game_over:
+            game_over = check_game_over(board_values)
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYUP:
                 # Check if the key corresponds to an arrow key
-                if event.key == pygame.K_UP:
-                    direction = 'UP'
-                elif event.key == pygame.K_DOWN:
-                    direction = 'DOWN'
-                elif event.key == pygame.K_LEFT:
-                    direction = 'LEFT'
-                elif event.key == pygame.K_RIGHT:
-                    direction = 'RIGHT'
-                else:
-                    # If not an arrow key, raise an exception
-                    raise ValueError("Invalid key input")
-
                 if game_over:
                     if event.key == pygame.K_RETURN:
                         board_values = [[0 for _ in range(4)] for _ in range(4)]
@@ -63,6 +55,17 @@ while run:
                         score = 0
                         direction = ''
                         game_over = False
+                
+                elif event.key == pygame.K_UP:
+                    direction = 'UP'
+                elif event.key == pygame.K_DOWN:
+                    direction = 'DOWN'
+                elif event.key == pygame.K_LEFT:
+                    direction = 'LEFT'
+                elif event.key == pygame.K_RIGHT:
+                    direction = 'RIGHT'
+                else:
+                    raise ValueError("Invalid key input")
 
         if direction:
             board_values, score = take_turn(direction, board_values, score)
@@ -86,6 +89,6 @@ while run:
         pygame.display.flip()
         pygame.time.wait(2000)
         run = False
-        print(f"An error occurred: {e}")
+        print(f"End game: {e}")
 
 pygame.quit()
