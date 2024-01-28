@@ -3,27 +3,29 @@ import pygame
 import random
 
 # 2048 game color library
-colors = {0: (204, 192, 179),
-          2: (238, 228, 218),
-          4: (237, 224, 200),
-          8: (242, 177, 121),
-          16: (245, 149, 99),
-          32: (246, 124, 95),
-          64: (246, 94, 59),
-          128: (237, 207, 114),
-          256: (237, 204, 97),
-          512: (237, 200, 80),
-          1024: (237, 197, 63),
-          2048: (237, 194, 46),
-          'light text': (249, 246, 242),
-          'dark text': (119, 110, 101),
-          'other': (0, 0, 0),
-          'bg': (187, 173, 160)}
-
+colors = {
+    0: (179, 230,230 ), 
+    2: (153, 204, 204),  
+    4: (102, 204, 204), 
+    8: (0, 204, 153),   
+    16: (0, 153, 102),  
+    32: (102, 255, 204),   
+    64: (51, 204, 153),  
+    128: (0, 204, 102), 
+    256: (0, 153, 51),   
+    512: (153, 255, 153), 
+    1024: (51, 204, 51), 
+    2048: (0, 102, 0), 
+    'light text': (0, 102, 102), 
+    'dark text': (0, 51, 51),   
+    'other': (0, 0, 0),             
+    'bg': (204, 238, 238),
+    'pop box': (64,64,64) 
+}
 
 # draw game over and restart text
 def draw_over(screen, font):
-    pygame.draw.rect(screen, 'black', [50, 50, 300, 100], 0, 10)
+    pygame.draw.rect(screen, colors['pop box'], [50, 50, 300, 100], 0, 10)
     game_over_text1 = font.render('Game Over!', True, 'white')
     game_over_text2 = font.render('Press Enter to Restart', True, 'white')
     screen.blit(game_over_text1, (130, 65))
@@ -126,14 +128,14 @@ def new_pieces(board):
 # draw background for the board
 def draw_board(screen, font, score, high_score):
     pygame.draw.rect(screen, colors['bg'], [0, 50, 400, 400], 0, 10)  
-    score_text = font.render(f'Score: {score}', True, 'black')
-    high_score_text = font.render(f'High Score: {high_score}', True, 'black')
+    score_text = font.render(f'Score: {score}', True, colors['dark text'])
+    high_score_text = font.render(f'High Score: {high_score}', True, colors['dark text'])
     screen.blit(score_text, (10, 460))
     screen.blit(high_score_text, (200, 460)) 
 
 # draw the top bar
 def draw_header(screen, font):
-    pygame.draw.rect(screen, 'black', [0, 0, 400, 50])
+    pygame.draw.rect(screen, 'grey', [0, 0, 400, 50])
     info_icon_image = pygame.image.load('info_icon.png')  
     screen.blit(info_icon_image, (400 - 50, 0))
 
@@ -157,11 +159,11 @@ def draw_pieces(screen, font, board):
                 value_text = font.render(str(value), True, value_color)
                 text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 112))  # Adjust the y-coordinate for the text
                 screen.blit(value_text, text_rect)
-                pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 70, 75, 75], 2, 5)  # Adjust the y-coordinate for the tile border
+                pygame.draw.rect(screen, colors['pop box'], [j * 95 + 20, i * 95 + 70, 75, 75], 1, 5)  # Adjust the y-coordinate for the tile border
 
 # draw invalid input to end the game
 def draw_invalid(screen, font):
-    pygame.draw.rect(screen, 'black', [50, 50, 300, 100], 0, 10)
+    pygame.draw.rect(screen, colors['pop box'], [50, 50, 300, 100], 0, 10)
     invalid_text1 = font.render('Invalid Input', True, 'white')
     invalid_text2 = font.render('Game Quit', True, 'white')
     screen.blit(invalid_text1, (130, 65))
@@ -185,7 +187,7 @@ def click_information(mouse_pos):
 # Function to display the instructions panel
 def draw_information(screen, font):
     instructions_panel = pygame.Surface((300, 200))  
-    instructions_panel.fill('black')  
+    instructions_panel.fill(colors['pop box'])
     instructions_text = font.render("Instructions:", True, 'red')
     instructions_panel.blit(instructions_text, (10, 10))
     screen.blit(instructions_panel, (50, 100))

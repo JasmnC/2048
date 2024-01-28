@@ -92,7 +92,7 @@ while run:
         if score > high_score:
             high_score = score
 
-        if clicking_info:
+        if clicking_info:  # Draw the information panel if clicking_info is True
             draw_information(screen, font)
 
         pygame.display.flip()
