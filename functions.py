@@ -132,7 +132,6 @@ def draw_board(screen, font, score, high_score):
     screen.blit(score_text, (10, 410))
     screen.blit(high_score_text, (10, 450))
 
-
 # draw tiles for game
 def draw_pieces(screen, font, board):
     for i in range(4):
@@ -155,9 +154,20 @@ def draw_pieces(screen, font, board):
                 screen.blit(value_text, text_rect)
                 pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 20, 75, 75], 2, 5)
 
+# draw invalid input to end the game
 def draw_invalid(screen, font):
     pygame.draw.rect(screen, 'black', [50, 50, 300, 100], 0, 10)
     invalid_text1 = font.render('Invalid Input', True, 'white')
     invalid_text2 = font.render('Game Quit', True, 'white')
     screen.blit(invalid_text1, (130, 65))
     screen.blit(invalid_text2, (140, 105))
+
+# functions.py
+
+def check_game_over(board_values):
+    all_cells_filled = all(value != 0 for row in board_values for value in row)
+    no_valid_moves = not any(board_values[i][j] == board_values[i+1][j] or 
+                             board_values[i][j] == board_values[i][j+1]
+                             for i in range(len(board_values)-1) 
+                             for j in range(len(board_values[0])-1))
+    return all_cells_filled and no_valid_moves
