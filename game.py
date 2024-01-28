@@ -1,4 +1,3 @@
-# game.py
 import pygame
 import random
 from functions import *
@@ -28,10 +27,13 @@ high_score = init_high
 
 # main game loop
 run = True
+clicking_info = False  
+
 while run:
     try:
         timer.tick(fps)
         screen.fill('gray')
+        draw_header(screen, font)
         draw_board(screen, font, score, high_score)
         draw_pieces(screen, font, board_values)
         if spawn_new or init_count < 2:
@@ -41,12 +43,20 @@ while run:
 
         if game_over:
             game_over = check_game_over(board_values)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYUP:
-                # Check if the key corresponds to an arrow key
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if click_information(event.pos):
+                    clicking_info = True  # Set clicking_info to True when the information icon is clicked
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:  # Left mouse button
+                    clicking_info = False  # Set clicking_info to False when the left mouse button is released
+
+            elif event.type == pygame.KEYUP:
                 if game_over:
                     if event.key == pygame.K_RETURN:
                         board_values = [[0 for _ in range(4)] for _ in range(4)]
@@ -55,7 +65,7 @@ while run:
                         score = 0
                         direction = ''
                         game_over = False
-                
+
                 elif event.key == pygame.K_UP:
                     direction = 'UP'
                 elif event.key == pygame.K_DOWN:
@@ -71,16 +81,19 @@ while run:
             board_values, score = take_turn(direction, board_values, score)
             direction = ''
             spawn_new = True
+
         if game_over:
             draw_over(screen, font)
             if high_score > init_high:
-                file = open('high_score', 'w')
-                file.write(f'{high_score}')
-                file.close()
-                init_high = high_score
+                with open('high_score', 'w') as file:
+                    file.write(f'{high_score}')
+                    init_high = high_score
 
         if score > high_score:
             high_score = score
+
+        if clicking_info:
+            draw_information(screen, font)
 
         pygame.display.flip()
     

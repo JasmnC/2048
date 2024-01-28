@@ -123,14 +123,19 @@ def new_pieces(board):
         full = True
     return board, full
 
-
 # draw background for the board
 def draw_board(screen, font, score, high_score):
-    pygame.draw.rect(screen, colors['bg'], [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, colors['bg'], [0, 50, 400, 400], 0, 10)  
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {high_score}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    screen.blit(score_text, (10, 460))
+    screen.blit(high_score_text, (200, 460)) 
+
+# draw the top bar
+def draw_header(screen, font):
+    pygame.draw.rect(screen, 'black', [0, 0, 400, 50])
+    info_icon_image = pygame.image.load('info_icon.png')  
+    screen.blit(info_icon_image, (400 - 50, 0))
 
 # draw tiles for game
 def draw_pieces(screen, font, board):
@@ -145,14 +150,14 @@ def draw_pieces(screen, font, board):
                 color = colors[value]
             else:
                 color = colors['other']
-            pygame.draw.rect(screen, color, [j * 95 + 20, i * 95 + 20, 75, 75], 0, 5)
+            pygame.draw.rect(screen, color, [j * 95 + 20, i * 95 + 70, 75, 75], 0, 5)  # Adjust the y-coordinate for the tiles
             if value > 0:
                 value_len = len(str(value))
                 font = pygame.font.Font('freesansbold.ttf', 48 - (5 * value_len))
                 value_text = font.render(str(value), True, value_color)
-                text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 57))
+                text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 112))  # Adjust the y-coordinate for the text
                 screen.blit(value_text, text_rect)
-                pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 20, 75, 75], 2, 5)
+                pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 70, 75, 75], 2, 5)  # Adjust the y-coordinate for the tile border
 
 # draw invalid input to end the game
 def draw_invalid(screen, font):
@@ -162,8 +167,7 @@ def draw_invalid(screen, font):
     screen.blit(invalid_text1, (130, 65))
     screen.blit(invalid_text2, (140, 105))
 
-# functions.py
-
+# check if the game is not over
 def check_game_over(board_values):
     all_cells_filled = all(value != 0 for row in board_values for value in row)
     no_valid_moves = not any(board_values[i][j] == board_values[i+1][j] or 
@@ -171,3 +175,17 @@ def check_game_over(board_values):
                              for i in range(len(board_values)-1) 
                              for j in range(len(board_values[0])-1))
     return all_cells_filled and no_valid_moves
+
+# Function to check if the mouse click is on the information icon/button
+def click_information(mouse_pos):
+    if 400 - 50 <= mouse_pos[0] <= 400 and 0 <= mouse_pos[1] <= 50:
+        return True
+    return False
+
+# Function to display the instructions panel
+def draw_information(screen, font):
+    instructions_panel = pygame.Surface((300, 200))  
+    instructions_panel.fill('black')  
+    instructions_text = font.render("Instructions:", True, 'red')
+    instructions_panel.blit(instructions_text, (10, 10))
+    screen.blit(instructions_panel, (50, 100))
