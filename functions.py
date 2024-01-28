@@ -1,29 +1,30 @@
-# functions.py
 import pygame
 import random
 
 # 2048 game color library
-colors = {0: (204, 192, 179),
-          2: (238, 228, 218),
-          4: (237, 224, 200),
-          8: (242, 177, 121),
-          16: (245, 149, 99),
-          32: (246, 124, 95),
-          64: (246, 94, 59),
-          128: (237, 207, 114),
-          256: (237, 204, 97),
-          512: (237, 200, 80),
-          1024: (237, 197, 63),
-          2048: (237, 194, 46),
-          'light text': (249, 246, 242),
-          'dark text': (119, 110, 101),
-          'other': (0, 0, 0),
-          'bg': (187, 173, 160)}
-
+colors = {
+    0: (179, 230,230 ), 
+    2: (153, 204, 204),  
+    4: (102, 204, 204), 
+    8: (0, 204, 153),   
+    16: (0, 153, 102),  
+    32: (102, 255, 204),   
+    64: (51, 204, 153),  
+    128: (0, 204, 102), 
+    256: (0, 153, 51),   
+    512: (153, 255, 153), 
+    1024: (51, 204, 51), 
+    2048: (0, 102, 0), 
+    'light text': (0, 102, 102), 
+    'dark text': (0, 51, 51),   
+    'other': (0, 0, 0),             
+    'bg': (204, 238, 238),
+    'pop box': (64,64,64) 
+}
 
 # draw game over and restart text
 def draw_over(screen, font):
-    pygame.draw.rect(screen, 'black', [50, 50, 300, 100], 0, 10)
+    pygame.draw.rect(screen, colors['pop box'], [50, 50, 300, 100], 0, 10)
     game_over_text1 = font.render('Game Over!', True, 'white')
     game_over_text2 = font.render('Press Enter to Restart', True, 'white')
     screen.blit(game_over_text1, (130, 65))
@@ -123,14 +124,28 @@ def new_pieces(board):
         full = True
     return board, full
 
-
 # draw background for the board
 def draw_board(screen, font, score, high_score):
-    pygame.draw.rect(screen, colors['bg'], [0, 0, 400, 400], 0, 10)
-    score_text = font.render(f'Score: {score}', True, 'black')
-    high_score_text = font.render(f'High Score: {high_score}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    pygame.draw.rect(screen, colors['bg'], [0, 50, 400, 400], 0, 10)  
+    score_text = pygame.font.Font('freesansbold.ttf', 18).render(f'Score: {score}', True, colors['dark text'])
+    high_score_text = pygame.font.Font('freesansbold.ttf', 18).render(f'High Score: {high_score}', True, colors['dark text'])
+    screen.blit(score_text, (10, 455))
+    screen.blit(high_score_text, (200, 455))
+
+    made_by = pygame.font.Font('freesansbold.ttf', 14).render("Made by JasmnC", True, colors['light text'])
+    screen.blit(made_by, (145, 480))
+    me_image = pygame.image.load('me.png')  
+    screen.blit(me_image, (265, 475))
+
+# draw the top bar
+def draw_header(screen, font):
+    pygame.draw.rect(screen, 'grey', [0, 0, 400, 50])
+    info_icon_image = pygame.image.load('info_icon.png')  
+    screen.blit(info_icon_image, (350, 5))
+    welcome_text1 = pygame.font.Font('freesansbold.ttf', 22).render("Welcome to 2048", True, colors['dark text'])
+    welcome_text2 = pygame.font.Font('freesansbold.ttf', 14).render("Can you beat it?", True, colors['dark text'])
+    screen.blit(welcome_text1, (110, 10))
+    screen.blit(welcome_text2, (140, 30))
 
 # draw tiles for game
 def draw_pieces(screen, font, board):
@@ -145,25 +160,24 @@ def draw_pieces(screen, font, board):
                 color = colors[value]
             else:
                 color = colors['other']
-            pygame.draw.rect(screen, color, [j * 95 + 20, i * 95 + 20, 75, 75], 0, 5)
+            pygame.draw.rect(screen, color, [j * 95 + 20, i * 95 + 70, 75, 75], 0, 5)  # Adjust the y-coordinate for the tiles
             if value > 0:
                 value_len = len(str(value))
                 font = pygame.font.Font('freesansbold.ttf', 48 - (5 * value_len))
                 value_text = font.render(str(value), True, value_color)
-                text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 57))
+                text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 112))  # Adjust the y-coordinate for the text
                 screen.blit(value_text, text_rect)
-                pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 20, 75, 75], 2, 5)
+                pygame.draw.rect(screen, colors['pop box'], [j * 95 + 20, i * 95 + 70, 75, 75], 1, 5)  # Adjust the y-coordinate for the tile border
 
 # draw invalid input to end the game
 def draw_invalid(screen, font):
-    pygame.draw.rect(screen, 'black', [50, 50, 300, 100], 0, 10)
+    pygame.draw.rect(screen, colors['pop box'], [50, 50, 300, 100], 0, 10)
     invalid_text1 = font.render('Invalid Input', True, 'white')
     invalid_text2 = font.render('Game Quit', True, 'white')
     screen.blit(invalid_text1, (130, 65))
     screen.blit(invalid_text2, (140, 105))
 
-# functions.py
-
+# check if the game is not over
 def check_game_over(board_values):
     all_cells_filled = all(value != 0 for row in board_values for value in row)
     no_valid_moves = not any(board_values[i][j] == board_values[i+1][j] or 
@@ -171,3 +185,33 @@ def check_game_over(board_values):
                              for i in range(len(board_values)-1) 
                              for j in range(len(board_values[0])-1))
     return all_cells_filled and no_valid_moves
+
+# Function to check if the mouse click is on the information icon/button
+def click_information(mouse_pos):
+    if 400 - 50 <= mouse_pos[0] <= 400 and 0 <= mouse_pos[1] <= 50:
+        return True
+    return False
+
+# Function to display the instructions panel
+def draw_information(screen, font):
+    instructions_panel = pygame.Surface((300, 150),pygame.SRCALPHA)
+    pygame.draw.rect(instructions_panel, colors['pop box'], instructions_panel.get_rect(), border_radius=10)
+
+    instruction_text1 = font.render("Instructions: ", True, 'white')
+    instructions_panel.blit(instruction_text1, (10, 10))
+
+    text= ["* Merge two tiles with the same value",
+        "* Use arrow keys to merge", 
+        "* Scores are add up on merged tiles",
+        "* Press any key to exit the game"
+        ]
+    vertical_position = 40
+    for line in text:
+        line_rendered = pygame.font.Font('freesansbold.ttf', 16).render(line, True, 'white')
+        instructions_panel.blit(line_rendered, (10, vertical_position))
+        vertical_position += line_rendered.get_height() + 10
+
+    screen.blit(instructions_panel, (50, 100))
+
+def open_link():
+    webbrowser.open('https://JasmnC.com')
