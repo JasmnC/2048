@@ -98,10 +98,12 @@ while run:
         pygame.display.flip()
     
     except Exception as e:
+        draw_header(screen, font)
+        draw_board(screen, font, score, high_score)
+        draw_pieces(screen, font, board_values)
         draw_invalid(screen, font)
         pygame.display.flip()
         pygame.time.wait(2000)
-        run = False
-        print(f"End game: {e}")
+        continue
 
 pygame.quit()
