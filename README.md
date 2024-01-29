@@ -90,7 +90,7 @@ The code has undergone several optimizations and improvements to enhance readabi
 
 </details>
 
-## Performance:
+## Performance
 The code sets the frame rate to 60 frames per second (`fps = 60`), which ensures smooth animation and responsiveness. However, performance may vary depending on the complexity of the game logic and the system's capabilities.
 
 ## Usage
