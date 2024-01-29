@@ -96,7 +96,7 @@ while run:
             draw_information(screen, font)
 
         pygame.display.flip()
-    
+
     except Exception as e:
         draw_header(screen, font)
         draw_board(screen, font, score, high_score)

@@ -201,7 +201,7 @@ def draw_information(screen, font):
     text= ["* Merge two tiles with the same value",
         "* Use arrow keys to merge", 
         "* Scores are add up on merged tiles",
-        "* Press any key to exit the game"
+        "* Press close to exit the game"
         ]
     vertical_position = 40
     for line in text:
